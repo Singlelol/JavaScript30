@@ -1,3 +1,4 @@
+(function() {
 const keys = document.querySelector('.keys');
 function endTransition(e) {
   e.target.classList.remove('playing')
@@ -22,3 +23,4 @@ keys.addEventListener('click', (event) => {
 Array.from(keys.childNodes).filter(el => el.classList == 'key').forEach(el => {
   el.addEventListener('transitionend', endTransition)
 });
+})();
