@@ -71,10 +71,26 @@
       justify-content: center;
       padding-top: 70px;
       color: white;
-      gap: 10px;
+      gap: 20px;
       font-size: 40px;
       font-weight: 700;
       font-family: cursive;
+    }
+
+    .numberTimer span {
+      position: relative;
+    }
+
+    .numberTimer span:not(:nth-child(3)):after {
+      content: ':';
+      position: absolute;
+      right: -20px;
+      animation: hide 1s ease-in-out infinite;
+    }
+
+    @keyframes hide {
+      0%, 100% {opacity: 0;}
+      50% {opacity: 1;}
     }
 
   </style>
