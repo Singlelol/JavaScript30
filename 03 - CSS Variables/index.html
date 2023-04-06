@@ -26,7 +26,7 @@
     :root {
       --spacing: 10px;
       --blur: 10px;
-      --base: #ffffff;
+      --base: #ffc600;
     }
 
     img {
@@ -62,15 +62,15 @@
       width: 100px;
     }
 
-    input::before {
-      content: 'var(--spacing)';
-      position: absolute;
-      left: 50%;
-      transform: translate(-50%);
-      bottom: -40px;
-      font-size: 25px;
-      color: var(--base);
+    .counter {
+      display: flex;
+      justify-content: center;
+      gap: 100px;
     }
+    .counter span {
+      width: 100px;
+    }
+
   </style>
 <script src="script.js"></script>
 </body>
