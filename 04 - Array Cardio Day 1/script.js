@@ -27,6 +27,8 @@ const people = [
   'Billings, Josh', 'Birrell, Augustine', 'Blair, Tony', 'Beecher, Henry', 'Biondo, Frank'
 ];
 
+const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
 //Функция создания инпутов (тип, ид, массив значений, ключ)
 
 function createInput(type, id, arr, key) {
@@ -38,6 +40,12 @@ function createInput(type, id, arr, key) {
   input.min = sortArr[0][key];
   input.max = sortArr[arr.length - 1][key];
   input.value = id === "min" ? "1500" : "1600";
+  if(!!!key) {
+    input.removeAttribute('min');
+    input.removeAttribute('max');
+    input.value = arr.join(' ');
+    input.size = input.value.length;
+  }
   return input;
 }
 
@@ -59,11 +67,13 @@ function setFirstBlock() {
   const ul = document.createElement('ul');
   ul.id = "firs_block";
   let sumYears = 0;
-  const result = inventors.filter((el) => {
+  const result = inventors
+  .filter((el) => {
     if (el.year < max && el.year >= min) {
       return el;
     }
-  }).map((el) => {
+  })
+  .map((el) => {
       const li = document.createElement('li');
       li.textContent = `${el.first} ${el.last} year ${el.year}`;
       sumYears += el.passed - el.year;
@@ -77,6 +87,32 @@ function setFirstBlock() {
     firsForm.append(ul);
   } else {
     document.getElementById("firs_block").replaceWith(ul);
+  }  
+};
+
+//Функция генерации последнего блока
+
+function setLastBlock() {
+  const value = document.getElementById("list").value;
+  const obj = {};
+  const ul = document.createElement('ul');
+  ul.id = "last_block";
+  const result = value
+  .split(' ')
+  .filter((el) => {
+    obj[el] = (obj[el]||0) + 1;
+    return obj[el] <= 1;
+  })
+  .map((el) => {
+      const li = document.createElement('li');
+      li.textContent = `${el} ${obj[el]}`;
+      return li;
+  });
+  ul.append(...result);
+  if(!document.getElementById("last_block")) {
+    thirtForm.append(ul);
+  } else {
+    document.getElementById("last_block").replaceWith(ul);
   }  
 };
 
@@ -108,13 +144,17 @@ function setSecontBlock(sort = false) {
   const tbody = document.createElement('tbody');
   let result;
   if(sort !== true) {
-    result = inventors.sort((a, b) => a.year - b.year).map((el) => {
+    result = inventors
+    .sort((a, b) => a.year - b.year)
+    .map((el) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `<td>${el.first}</td><td>${el.last}</td>`;
       return tr;
     });
   } else {
-    result = inventors.sort((a, b) => (a.passed - a.year) - (b.passed - b.year)).map((el) => {
+    result = inventors
+    .sort((a, b) => (a.passed - a.year) - (b.passed - b.year))
+    .map((el) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `<td>${el.first}</td><td>${el.last}</td>`;
       return tr;
@@ -136,3 +176,14 @@ secondForm.append(createInput("checkbox", "lived", inventors, "year"));
 document.getElementById("lived").onclick = setSecontBlock;
 
 //Функции созданиея третьего блока
+
+const thirtBlock = document.createElement('p');
+thirtBlock.textContent = people.sort().join(' | ');
+secondForm.after(thirtBlock);
+
+const thirtForm = document.createElement('form');
+thirtForm.append(createLabel("Set list of words", "list"));
+thirtForm.append(createInput("text", "list", data));
+thirtBlock.after(thirtForm);
+setLastBlock();
+document.getElementById("list").oninput = setLastBlock;
